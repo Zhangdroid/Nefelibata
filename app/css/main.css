@@ -579,7 +579,9 @@ nav {
   position: fixed; }
 
 #welcome {
-  position: absolute; }
+  position: absolute;
+  background-image: url(../assets/images/background.jpg);
+  background-size: cover; }
 
 #main-container {
   position: absolute;
@@ -601,7 +603,10 @@ nav {
   width: 50vw;
   height: 100vh; }
 
-html, body {
+html,
+body {
+  height: 100%;
+  width: 100%;
   margin: 0;
   padding: 0;
   font-family: 'Raleway', sans-serif; }
@@ -609,9 +614,13 @@ html, body {
 * {
   transition: all .5s; }
 
+.hide {
+  display: none; }
+
 #help {
   background: #000;
   opacity: 0;
+  z-index: -1;
   position: fixed;
   top: 50%;
   left: 50%;

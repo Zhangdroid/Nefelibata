@@ -1,6 +1,6 @@
 {
   "name": "nefelibata",
-  "main": "viwes/welcome.html",
+  "main": "index.html",
   "version": "0.0.1",
   "single-instance": true,
   "window": {
@@ -14,8 +14,8 @@
   },
   "chromium-args": "--child-clean-exit",
   "dependencies": {
-    "i18n": "^0.5.0",
     "marked": "^0.3.3",
+    "node-polyglot": "^0.4.1",
     "superagent": "^0.21.0"
   }
 }
