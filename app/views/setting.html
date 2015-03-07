@@ -1,0 +1,19 @@
+<md-dialog aria-label="{{ 'SETTING' | translate }}">
+    <md-content>
+        <md-subheader class="md-sticky-no-effect" style='width:70vw'>{{ 'SETTING' | translate }}</md-subheader>
+        <h2>
+        {{ 'LANGUAGE' | translate }}
+      </h2>
+        </md-toolbar>
+        <md-button class="md-raised md-primary" ng-click="changeLanguage('en')">{{ 'BUTTON_LANG_EN' | translate }}</md-button>
+        <md-button class="md-raised md-warn" ng-click="changeLanguage('zh')">{{ 'BUTTON_LANG_ZH' | translate }}</md-button>
+
+    </md-content>
+    <div class="md-actions" layout="row">
+
+        <span flex></span>
+        <md-button class="md-primary" ng-click="closeDialog()">
+            {{ 'CLOSE' | translate }}
+        </md-button>
+    </div>
+</md-dialog>

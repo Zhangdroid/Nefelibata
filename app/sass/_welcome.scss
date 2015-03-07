@@ -1,5 +1,58 @@
 #welcome {
+    width: 100vw;
+    height: 100vh;
     position: absolute;
+    z-index: 999;
+    opacity: 1;
+    display: block;
+}
+
+.welcome-ani {
+    -webkit-animation: fadeOut 1s linear 3.5s forwards;
+}
+
+#welcome-background {
+    width: 100vw;
+    height: 100vh;
     background-image: url(../assets/images/background.jpg);
     background-size: cover;
+}
+
+.welcome-background-ani {
+    -webkit-filter: blur(0);
+    -webkit-animation: blur 1.5s linear 0.8s forwards;
+}
+
+#logo {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#bg-info {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    color: #fff;
+    font-weight: 200;
+    font-size: 14px;
+}
+
+@-webkit-keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+@-webkit-keyframes blur {
+    0% {
+        -webkit-filter: blur(0);
+    }
+    100% {
+        -webkit-filter: blur(15px);
+    }
 }

@@ -1,21 +1,22 @@
 {
-  "name": "nefelibata",
-  "main": "index.html",
-  "version": "0.0.1",
-  "single-instance": true,
-  "window": {
-    "title": "nefelibata",
-    "icon": "icon.png",
-    "width": 800,
-    "height": 600,
-    "position": "center",
-    "min_width": 650,
-    "min_height": 650
-  },
-  "chromium-args": "--child-clean-exit",
-  "dependencies": {
-    "marked": "^0.3.3",
-    "node-polyglot": "^0.4.1",
-    "superagent": "^0.21.0"
-  }
+    "name": "nefelibata",
+    "main": "index.html",
+    "version": "0.0.1",
+    "single-instance": true,
+    "window": {
+        "title": "nefelibata",
+        "icon": "icon.png",
+        "width": 1000,
+        "height": 800,
+        "toolbar": false,
+        "position": "center",
+        "min_width": 650,
+        "min_height": 650
+    },
+    "chromium-args": "--child-clean-exit",
+    "dependencies": {
+        "marked": "^0.3.3",
+        "node-polyglot": "^0.4.1",
+        "superagent": "^0.21.0"
+    }
 }

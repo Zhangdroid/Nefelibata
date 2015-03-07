@@ -1,6 +1,7 @@
 @import 'font',
 'sweet-alert',
-'nav',
+'toolbox',
+'mfb',
 'welcome',
 'editor';
 html,
@@ -30,4 +31,28 @@ body {
     transform: translate(-50%, -50%);
     width: 80vw;
     height: 80vh;
+}
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-button {
+  width: 0px;
+  height: 0px;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbcbcb;
+  border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #808080;
+}
+::-webkit-scrollbar-thumb:active {
+  background: #808080;
+}
+::-webkit-scrollbar-track {
+  border-radius: 5px;
+}
+::-webkit-scrollbar-corner {
+  background: transparent;
 }
