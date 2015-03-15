@@ -2,6 +2,8 @@
 var gui = require("nw.gui");
 var fs = require("fs");*/
 
+var isSaved = 'true';
+
 
 $(document).ready(function () {
 

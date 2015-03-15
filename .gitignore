@@ -1,7 +1,10 @@
 /node_modules
+/app/bower_components
+/app/node_modules
 /tmp
 /buildTmp
 /.sass-cache
 /resources
 /dist
-/app/bower_components
+/.idea
+

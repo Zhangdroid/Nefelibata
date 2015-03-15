@@ -1,0 +1,20 @@
+<md-dialog aria-label="{{ 'SETTING' | translate }}">
+    <md-content>
+        <md-subheader class="md-sticky-no-effect" style='width:70vw'>{{ 'SAVEDIALOGTITLE' | translate }}</md-subheader>
+        <p>
+        {{ 'SAVEDIALOGCONTENT' | translate }}
+      </p>
+
+
+    </md-content>
+    <div class="md-actions" layout="row">
+
+        <span flex></span>
+        <md-button class="md-primary" ng-click="closeDialog()">
+            {{ 'CANCEL' | translate }}
+        </md-button>
+        <md-button class="md-primary" ng-click="closeDialog()">
+            {{ 'SAVE' | translate }}
+        </md-button>
+    </div>
+</md-dialog>

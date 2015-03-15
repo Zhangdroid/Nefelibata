@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="css/codemirror.css">
     <link rel="stylesheet" href="css/font-awesome.css">
     <link rel="stylesheet" href="css/hotkeys.css">
-    <!--    <link rel="stylesheet" href="css/hint.css">-->
     <link rel="stylesheet" href="css/angular-material.css">
     <link rel="stylesheet" href="css/main.css">
 
@@ -23,6 +22,7 @@
     <script src="js/vendor/angular-translate.min.js"></script>
     <script src="js/vendor/angular-translate-storage-cookie.min.js"></script>
     <script src="js/vendor/angular-translate-storage-local.min.js"></script>
+    <script src="js/vendor/offClick.js"></script>
     <script src="js/vendor/mfb-directive.js"></script>
     <script src="js/vendor/hotkeys.js"></script>
 
@@ -33,11 +33,9 @@
     <script src="js/app.js"></script>
     <script src="js/controller/editor.js"></script>
     <script src="js/controller/i18n.js"></script>
-<!--    <script src="js/setting.js"></script>-->
     <script src="js/controller/shortcuts.js"></script>
     <script src="js/controller/nav.js"></script>
-    <script src="js/background.js"></script>
-    <script src="js/setting.js"></script>
+    <!--    <script src="js/background.js"></script>-->
 
 </head>
 
@@ -100,40 +98,41 @@
                 <label> {{ 'TITLE' | translate }}</label>
                 <input ng-model="editor.title">
             </md-input-container>
-            <textarea id="editor-context" ng-change="textChange()" ng-model="editor.src" placeholder="{{ 'WHATSYOURSTORY' | translate }}"></textarea>
+            <textarea id="editor-context" ng-change="textChange()"  placeholder="{{ 'WHATSYOURSTORY' | translate }}" ng-model="editor.context"></textarea>
         </div>
         <div id="preview">
             <h1 id="parsed-title">{{editor.title}}</h1>
             <md-content id="parsed-content" class="md-padding" ng-bind-html="editor.parsed"></md-content>
         </div>
-        <div id="toolbox" class='hi-icon-effect-1 hi-icon-effect-1a hi-icon'>
-            <button class="fa fa-bold" ng-click="onEditor('bold')"></button>
-            <button class="fa fa-italic" ng-click="onEditor('italic')"></button>
-            <button class="fa fa-underline" ng-click="onEditor('underline')"></button>
-            <button class="fa fa-minus" ng-click="onEditor('horline')"></button>
-            <button class="fa fa-list-ul" ng-click="onEditor('list')"></button>
-            <button class="fa fa-list-ol" ng-click="onEditor('list-2')"></button>
-            <button class="fa fa-header" ng-click="onEditor('header')"></button>
-            <button class="fa fa-paperclip" ng-click="onEditor('url')"></button>
-            <button class="fa fa-image" ng-click="onEditor('img')"></button>
-            <button class="fa fa-code" ng-click="onEditor('code')"></button>
-            <button class="fa fa-quote-left" ng-click="onEditor('quote')"></button>
-            <button class="fa fa-strikethrough" ng-click="onEditor('strikethrough')"></button>
+        <div id="toolbox">
+            <button class="icon toolbar fa fa-bold" ng-click="onEditor('bold')"></button>
+            <button class="icon toolbar fa fa-italic" ng-click="onEditor('italic')"></button>
+            <button class="icon toolbar fa fa-underline" ng-click="onEditor('underline')"></button>
+            <button class="icon toolbar fa fa-minus" ng-click="onEditor('horline')"></button>
+            <button class="icon toolbar fa fa-list-ul" ng-click="onEditor('list')"></button>
+            <button class="icon toolbar fa fa-list-ol" ng-click="onEditor('list-2')"></button>
+            <button class="icon toolbar fa fa-header" ng-click="onEditor('header')"></button>
+            <button class="icon toolbar fa fa-paperclip" ng-click="onEditor('url')"></button>
+            <button class="icon toolbar fa fa-image" ng-click="onEditor('img')"></button>
+            <button class="icon toolbar fa fa-code" ng-click="onEditor('code')"></button>
+            <button class="icon toolbar fa fa-quote-left" ng-click="onEditor('quote')"></button>
+            <button class="icon toolbar fa fa-strikethrough" ng-click="onEditor('strikethrough')"></button>
         </div>
+        <input class="hide" id="dialog-openFile" type="file" accept=".md" ng-change="onOpenFile()" ng-model="editor.src">
+        <input class="hide" id="dialog-saveFile" type="file" accept=".md" nwsaveas="New Document.md">
 
     </div>
 
     <div ng-controller="navCtrl">
-        <nav mfb-menu position="br" effect="slidein" label="{{ 'SAVE' | translate }}" active-icon="fa fa-floppy-o" resting-icon="fa fa-plus" toggling-method="hover">
-            <a mfb-button icon="fa fa-folder-open-o" label="{{ 'OPEN' | translate }}" ng-click=""></a>
-            <a mfb-button icon="fa fa-file-o" label="{{ 'NEW' | translate }}" ng-click=""></a>
-            <a mfb-button icon="fa fa-cog" label="{{ 'SETTING' | translate }}" ng-click="showSetting()"></a>
-        </nav>
+        <mfb-menu position="br" effect="slidein" label="{{ 'SAVE' | translate }}" active-icon="fa fa-floppy-o" resting-icon="fa fa-plus" toggling-method="hover" ng-click="saveFile($event)">
+            <mfb-button icon="fa fa-folder-open-o" label="{{ 'OPEN' | translate }}" ng-click="openFile($event)"></mfb-button>
+            <mfb-button icon="fa fa-file-o" label="{{ 'NEW' | translate }}" ng-click="newFile($event)"></mfb-button>
+            <mfb-button icon="fa fa-cog" label="{{ 'SETTING' | translate }}" ng-click="showSetting($event)"></mfb-button>
+        </mfb-menu>
+
     </div>
     <div id="help" ng-controller="helpCtrl"></div>
 
-    <input class="hide" id="dialog-openFile" type="file" accept=".md">
-    <input class="hide" id="dialog-saveFile" type="file" accept=".md" nwsaveas="New Document.md">
 
 </body>
 

@@ -1,17 +1,18 @@
-app.controller("editorController", ["$scope", function ($scope) {
-
+app.controller("editorController", function ($scope, Data) {
+    $scope.data = Data;
     $scope.editor = {
-        src: '',
-        parsed: ''
+        context: '',
+        parsed: '',
     };
-
     $scope.textChange = function () {
-        $scope.editor.parsed = marked($scope.editor.src);
+        isSaved = false;
+        $scope.editor.parsed = marked($scope.editor.context);
     };
+    
+    $scope.onOpenFile = function () {
 
-    $scope.onPublish = function () {
-        alert("Write your own publish script here!");
-    };
+        console.log(Data.src);
+    }
 
     $scope.onEditor = function (param) {
         var sel = $scope.getSelection();
@@ -140,4 +141,4 @@ app.controller("editorController", ["$scope", function ($scope) {
         ta.value = leftText + text + rightText;
     };
 
-}]);
+});

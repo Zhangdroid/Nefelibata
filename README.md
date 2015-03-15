@@ -6,7 +6,6 @@
 
 
 ##Credits
-https://github.com/chinchang/hint.css
 https://github.com/huytd/angularjs-markdown-editor
 https://material.angularjs.org
 https://github.com/angular-translate/angular-translate
