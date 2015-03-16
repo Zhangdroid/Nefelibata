@@ -1,408 +1,306 @@
-/*jshint camelcase: false*/
+'use strict';
 
 module.exports = function (grunt) {
-  'use strict';
-
-  // load all grunt tasks
+  // show elapsed time at the end
   require('time-grunt')(grunt);
+  // load all grunt tasks
   require('load-grunt-tasks')(grunt);
 
   // configurable paths
-  var config = {
+  var yeomanConfig = {
     app: 'app',
-    dist: 'dist',
-    distMac32: 'dist/MacOS32',
-    distMac64: 'dist/MacOS64',
-    distLinux32: 'dist/Linux32',
-    distLinux64: 'dist/Linux64',
-    distWin: 'dist/Win',
-    tmp: 'buildTmp',
-    resources: 'resources'
+    dist: 'dist'
   };
 
   grunt.initConfig({
-    config: config,
-    clean: {
+    yeoman: yeomanConfig,
+    watch: {
+      options: {
+        nospawn: true
+      },
+      default: {
+        files: [
+          '<%= yeoman.app %>/*.html',
+          '<%= yeoman.app %>/elements/{,*/}*.html',
+          '{.tmp,<%= yeoman.app %>}/elements/{,*/}*.{css,js}',
+          '{.tmp,<%= yeoman.app %>}/styles/{,*/}*.css',
+          '{.tmp,<%= yeoman.app %>}/scripts/{,*/}*.js',
+          '<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
+        ]
+      },
+      js: {
+        files: ['<%= yeoman.app %>/scripts/{,*/}*.js'],
+        tasks: ['jshint']
+      },
+      styles: {
+        files: [
+          '<%= yeoman.app %>/styles/{,*/}*.css',
+          '<%= yeoman.app %>/elements/{,*/}*.css'
+        ],
+        tasks: ['copy:styles', 'autoprefixer:server']
+      },
+      sass: {
+        files: [
+          '<%= yeoman.app %>/styles/{,*/}*.{scss,sass}',
+          '<%= yeoman.app %>/elements/{,*/}*.{scss,sass}'
+        ],
+        tasks: ['sass:server', 'autoprefixer:server']
+      }
+    },
+    // Compiles Sass to CSS and generates necessary files if requested
+    sass: {
+      options: {
+        loadPath: 'bower_components'
+      },
       dist: {
+        options: {
+          style: 'compressed'
+        },
         files: [{
-          dot: true,
-          src: [
-            '<%= config.dist %>/*',
-            '<%= config.tmp %>/*'
-          ]
+          expand: true,
+          cwd: '<%= yeoman.app %>',
+          src: ['styles/{,*/}*.{scss,sass}', 'elements/{,*/}*.{scss,sass}'],
+          dest: '<%= yeoman.dist %>',
+          ext: '.css'
         }]
       },
-      distMac32: {
+      server: {
         files: [{
-          dot: true,
-          src: [
-            '<%= config.distMac32 %>/*',
-            '<%= config.tmp %>/*'
-          ]
-        }]
-      },
-      distMac64: {
-        files: [{
-          dot: true,
-          src: [
-            '<%= config.distMac64 %>/*',
-            '<%= config.tmp %>/*'
-          ]
-        }]
-      },
-      distLinux64: {
-        files: [{
-          dot: true,
-          src: [
-            '<%= config.distLinux64 %>/*',
-            '<%= config.tmp %>/*'
-          ]
-        }]
-      },
-      distLinux32: {
-        files: [{
-          dot: true,
-          src: [
-            '<%= config.distLinux32 %>/*',
-            '<%= config.tmp %>/*'
-          ]
-        }]
-      },
-      distWin: {
-        files: [{
-          dot: true,
-          src: [
-            '<%= config.distWin %>/*',
-            '<%= config.tmp %>/*'
-          ]
+          expand: true,
+          cwd: '<%= yeoman.app %>',
+          src: ['styles/{,*/}*.{scss,sass}', 'elements/{,*/}*.{scss,sass}'],
+          dest: '.tmp',
+          ext: '.css'
         }]
       }
+    },
+    autoprefixer: {
+      options: {
+        browsers: ['last 2 versions']
+      },
+      server: {
+        files: [{
+          expand: true,
+          cwd: '.tmp',
+          src: '**/*.css',
+          dest: '.tmp'
+        }]
+      },
+      dist: {
+        files: [{
+          expand: true,
+          cwd: '<%= yeoman.dist %>',
+          src: ['**/*.css', '!bower_components/**/*.css'],
+          dest: '<%= yeoman.dist %>'
+        }]
+      }
+    },
+    browserSync: {
+      options: {
+        notify: false,
+        port: 9000,
+        open: true
+      },
+      app: {
+        options: {
+          watchTask: true,
+          injectChanges: false, // can't inject Shadow DOM
+          server: {
+            baseDir: ['.tmp', '<%= yeoman.app %>'],
+            routes: {
+              '/bower_components': 'bower_components'
+            }
+          }
+        },
+        src: [
+          '.tmp/**/*.{css,html,js}',
+          '<%= yeoman.app %>/**/*.{css,html,js}'
+        ]
+      },
+      dist: {
+        options: {
+          server: {
+            baseDir: 'dist'
+          }
+        },
+        src: [
+          '<%= yeoman.dist %>/**/*.{css,html,js}',
+          '!<%= yeoman.dist %>/bower_components/**/*'
+        ]
+      }
+    },
+    clean: {
+      dist: ['.tmp', '<%= yeoman.dist %>/*'],
+      server: '.tmp'
     },
     jshint: {
       options: {
-        jshintrc: '.jshintrc'
+        jshintrc: '.jshintrc',
+        reporter: require('jshint-stylish')
       },
-      files: '<%= config.app %>/js/*.js'
+      all: [
+        '<%= yeoman.app %>/scripts/{,*/}*.js',
+        '!<%= yeoman.app %>/scripts/vendor/*',
+        'test/spec/{,*/}*.js'
+      ]
     },
-    sass: {
+    useminPrepare: {
+      html: '<%= yeoman.app %>/index.html',
+      options: {
+        dest: '<%= yeoman.dist %>'
+      }
+    },
+    usemin: {
+      html: ['<%= yeoman.dist %>/{,*/}*.html'],
+      css: ['<%= yeoman.dist %>/styles/{,*/}*.css'],
+      options: {
+        dirs: ['<%= yeoman.dist %>']
+      }
+    },
+    replace: {
       dist: {
+        options: {
+          patterns: [{
+            match: /elements\/elements\.html/g,
+            replacement: 'elements/elements.vulcanized.html'
+          }]
+        },
         files: {
-          '<%= config.app %>/css/main.css': '<%= config.app %>/sass/main.scss'
+          '<%= yeoman.dist %>/index.html': ['<%= yeoman.dist %>/index.html']
         }
       }
     },
-    watch: {
-      scripts: {
-        files: [
-                  '<%= config.app %>/sass/*.scss'
-              ],
-        tasks: ['sass']
+    vulcanize: {
+      default: {
+        options: {
+          strip: true,
+          inline: true
+        },
+        files: {
+          '<%= yeoman.dist %>/elements/elements.vulcanized.html': [
+            '<%= yeoman.dist %>/elements/elements.html'
+          ]
+        }
+      }
+    },
+    imagemin: {
+      dist: {
+        files: [{
+          expand: true,
+          cwd: '<%= yeoman.app %>/images',
+          src: '{,*/}*.{png,jpg,jpeg,svg}',
+          dest: '<%= yeoman.dist %>/images'
+        }]
+      }
+    },
+    minifyHtml: {
+      options: {
+        quotes: true,
+        empty: true,
+        spare: true
+      },
+      app: {
+        files: [{
+          expand: true,
+          cwd: '<%= yeoman.dist %>',
+          src: '*.html',
+          dest: '<%= yeoman.dist %>'
+        }]
       }
     },
     copy: {
-      appLinux: {
+      dist: {
         files: [{
           expand: true,
-          cwd: '<%= config.app %>',
-          dest: '<%= config.distLinux64 %>/app.nw',
-          src: '**'
-        }]
-      },
-      appLinux32: {
-        files: [{
-          expand: true,
-          cwd: '<%= config.app %>',
-          dest: '<%= config.distLinux32 %>/app.nw',
-          src: '**'
-        }]
-      },
-      appMacos32: {
-        files: [{
-          expand: true,
-          cwd: '<%= config.app %>',
-          dest: '<%= config.distMac32 %>/node-webkit.app/Contents/Resources/app.nw',
-          src: '**'
+          dot: true,
+          cwd: '<%= yeoman.app %>',
+          dest: '<%= yeoman.dist %>',
+          src: [
+            '*.{ico,txt}',
+            '.htaccess',
+            '*.html',
+            'elements/**',
+            '!elements/**/*.scss',
+            'images/{,*/}*.{webp,gif}'
+          ]
         }, {
           expand: true,
-          cwd: '<%= config.resources %>/mac/',
-          dest: '<%= config.distMac32 %>/node-webkit.app/Contents/',
-          filter: 'isFile',
-          src: '*.plist'
-        }, {
-          expand: true,
-          cwd: '<%= config.resources %>/mac/',
-          dest: '<%= config.distMac32 %>/node-webkit.app/Contents/Resources/',
-          filter: 'isFile',
-          src: '*.icns'
-        }, {
-          expand: true,
-          cwd: '<%= config.app %>/../node_modules/',
-          dest: '<%= config.distMac32 %>/node-webkit.app/Contents/Resources/app.nw/node_modules/',
-          src: '**'
+          dot: true,
+          dest: '<%= yeoman.dist %>',
+          src: ['bower_components/**']
         }]
       },
-      appMacos64: {
+      styles: {
         files: [{
           expand: true,
-          cwd: '<%= config.app %>',
-          dest: '<%= config.distMac64 %>/node-webkit.app/Contents/Resources/app.nw',
-          src: '**'
-        }, {
-          expand: true,
-          cwd: '<%= config.resources %>/mac/',
-          dest: '<%= config.distMac64 %>/node-webkit.app/Contents/',
-          filter: 'isFile',
-          src: '*.plist'
-        }, {
-          expand: true,
-          cwd: '<%= config.resources %>/mac/',
-          dest: '<%= config.distMac64 %>/node-webkit.app/Contents/Resources/',
-          filter: 'isFile',
-          src: '*.icns'
-        }, {
-          expand: true,
-          cwd: '<%= config.app %>/../node_modules/',
-          dest: '<%= config.distMac64 %>/node-webkit.app/Contents/Resources/app.nw/node_modules/',
-          src: '**'
-        }]
-      },
-      webkit32: {
-        files: [{
-          expand: true,
-          cwd: '<%=config.resources %>/node-webkit/MacOS32',
-          dest: '<%= config.distMac32 %>/',
-          src: '**'
-        }]
-      },
-      webkit64: {
-        files: [{
-          expand: true,
-          cwd: '<%=config.resources %>/node-webkit/MacOS64',
-          dest: '<%= config.distMac64 %>/',
-          src: '**'
-        }]
-      },
-      copyWinToTmp: {
-        files: [{
-          expand: true,
-          cwd: '<%= config.resources %>/node-webkit/Windows/',
-          dest: '<%= config.tmp %>/',
-          src: '**'
+          cwd: '<%= yeoman.app %>',
+          dest: '.tmp',
+          src: ['{styles,elements}/{,*/}*.css']
         }]
       }
     },
-    compress: {
-      appToTmp: {
+    // See this tutorial if you'd like to run PageSpeed
+    // against localhost: http://www.jamescryer.com/2014/06/12/grunt-pagespeed-and-ngrok-locally-testing/
+    pagespeed: {
+      options: {
+        // By default, we use the PageSpeed Insights
+        // free (no API key) tier. You can use a Google
+        // Developer API key if you have one. See
+        // http://goo.gl/RkN0vE for info
+        nokey: true
+      },
+      // Update `url` below to the public URL for your site
+      mobile: {
         options: {
-          archive: '<%= config.tmp %>/app.zip'
-        },
-        files: [{
-          expand: true,
-          cwd: '<%= config.app %>',
-          src: ['**']
-        }]
-      },
-      finalWindowsApp: {
-        options: {
-          archive: '<%= config.distWin %>/nefelibata.zip'
-        },
-        files: [{
-          expand: true,
-          cwd: '<%= config.tmp %>',
-          src: ['**']
-        }]
-      }
-    },
-    rename: {
-      macApp32: {
-        files: [{
-          src: '<%= config.distMac32 %>/node-webkit.app',
-          dest: '<%= config.distMac32 %>/nefelibata.app'
-        }]
-      },
-      macApp64: {
-        files: [{
-          src: '<%= config.distMac64 %>/node-webkit.app',
-          dest: '<%= config.distMac64 %>/nefelibata.app'
-        }]
-      },
-      zipToApp: {
-        files: [{
-          src: '<%= config.tmp %>/app.zip',
-          dest: '<%= config.tmp %>/app.nw'
-        }]
+          url: "https://developers.google.com/web/fundamentals/",
+          locale: "en_GB",
+          strategy: "mobile",
+          threshold: 80
+        }
       }
     }
   });
 
-  grunt.registerTask('chmod32', 'Add lost Permissions.', function () {
-    var fs = require('fs'),
-      path = config.distMac32 + '/nefelibata.app/Contents/';
-    fs.chmodSync(path + 'Frameworks/node-webkit Helper EH.app/Contents/MacOS/node-webkit Helper EH', '555');
-    fs.chmodSync(path + 'Frameworks/node-webkit Helper NP.app/Contents/MacOS/node-webkit Helper NP', '555');
-    fs.chmodSync(path + 'Frameworks/node-webkit Helper.app/Contents/MacOS/node-webkit Helper', '555');
-    fs.chmodSync(path + 'MacOS/node-webkit', '555');
+  grunt.registerTask('server', function (target) {
+    grunt.log.warn('The `server` task has been deprecated. Use `grunt serve` to start a server.');
+    grunt.task.run(['serve:' + target]);
   });
 
-  grunt.registerTask('chmod64', 'Add lost Permissions.', function () {
-    var fs = require('fs'),
-      path = config.distMac64 + '/nefelibata.app/Contents/';
-    fs.chmodSync(path + 'Frameworks/node-webkit Helper EH.app/Contents/MacOS/node-webkit Helper EH', '555');
-    fs.chmodSync(path + 'Frameworks/node-webkit Helper NP.app/Contents/MacOS/node-webkit Helper NP', '555');
-    fs.chmodSync(path + 'Frameworks/node-webkit Helper.app/Contents/MacOS/node-webkit Helper', '555');
-    fs.chmodSync(path + 'MacOS/node-webkit', '555');
+  grunt.registerTask('serve', function (target) {
+    if (target === 'dist') {
+      return grunt.task.run(['build', 'browserSync:dist']);
+    }
+
+    grunt.task.run([
+      'clean:server',
+      'sass:server',
+      'copy:styles',
+      'autoprefixer:server',
+      'browserSync:app',
+      'watch'
+    ]);
   });
 
-  grunt.registerTask('createLinuxApp', 'Create linux distribution.', function (version) {
-    var done = this.async();
-    var childProcess = require('child_process');
-    var exec = childProcess.exec;
-    var path = './' + (version === 'Linux64' ? config.distLinux64 : config.distLinux32);
-    exec('mkdir -p ' + path + '; cp resources/node-webkit/' + version + '/nw.pak ' + path + ' && cp resources/node-webkit/' + version + '/nw ' + path + '/node-webkit && cp resources/node-webkit/' + version + '/icudtl.dat ' + path + '/icudtl.dat', function (error, stdout, stderr) {
-      var result = true;
-      if (stdout) {
-        grunt.log.write(stdout);
-      }
-      if (stderr) {
-        grunt.log.write(stderr);
-      }
-      if (error !== null) {
-        grunt.log.error(error);
-        result = false;
-      }
-      done(result);
-    });
-  });
+  
 
-  grunt.registerTask('createWindowsApp', 'Create windows distribution.', function () {
-    var done = this.async();
-    var concat = require('concat-files');
-    concat([
-      'buildTmp/nw.exe',
-      'buildTmp/app.nw'
-    ], 'buildTmp/nefelibata.exe', function () {
-      var fs = require('fs');
-      fs.unlink('buildTmp/app.nw', function (error, stdout, stderr) {
-        if (stdout) {
-          grunt.log.write(stdout);
-        }
-        if (stderr) {
-          grunt.log.write(stderr);
-        }
-        if (error !== null) {
-          grunt.log.error(error);
-          done(false);
-        } else {
-          fs.unlink('buildTmp/nw.exe', function (error, stdout, stderr) {
-            var result = true;
-            if (stdout) {
-              grunt.log.write(stdout);
-            }
-            if (stderr) {
-              grunt.log.write(stderr);
-            }
-            if (error !== null) {
-              grunt.log.error(error);
-              result = false;
-            }
-            done(result);
-          });
-        }
-      });
-    });
-  });
-
-  grunt.registerTask('setVersion', 'Set version to all needed files', function (version) {
-    var config = grunt.config.get(['config']);
-    var appPath = config.app;
-    var resourcesPath = config.resources;
-    var mainPackageJSON = grunt.file.readJSON('package.json');
-    var appPackageJSON = grunt.file.readJSON(appPath + '/package.json');
-    var infoPlistTmp = grunt.file.read(resourcesPath + '/mac/Info.plist.tmp', {
-      encoding: 'UTF8'
-    });
-    var infoPlist = grunt.template.process(infoPlistTmp, {
-      data: {
-        version: version
-      }
-    });
-    mainPackageJSON.version = version;
-    appPackageJSON.version = version;
-    grunt.file.write('package.json', JSON.stringify(mainPackageJSON, null, 2), {
-      encoding: 'UTF8'
-    });
-    grunt.file.write(appPath + '/package.json', JSON.stringify(appPackageJSON, null, 2), {
-      encoding: 'UTF8'
-    });
-    grunt.file.write(resourcesPath + '/mac/Info.plist', infoPlist, {
-      encoding: 'UTF8'
-    });
-  });
-
-  grunt.registerTask('dist-linux', [
-    'jshint',
-    'clean:distLinux64',
-    'copy:appLinux',
-    'createLinuxApp:Linux64'
-  ]);
-
-  grunt.registerTask('dist-linux32', [
-    'jshint',
-    'clean:distLinux32',
-    'copy:appLinux32',
-    'createLinuxApp:Linux32'
-  ]);
-
-  grunt.registerTask('dist-win', [
-   /* 'jshint',*/
+  grunt.registerTask('build', [
+    'clean:dist',
     'sass',
-    'clean:distWin',
-    'copy:copyWinToTmp',
-    'compress:appToTmp',
-    'rename:zipToApp',
-    'createWindowsApp',
-    'compress:finalWindowsApp'
+    'copy',
+    'useminPrepare',
+    'imagemin',
+    'concat',
+    'autoprefixer',
+    'uglify',
+    'vulcanize',
+    'usemin',
+    'replace',
+    'minifyHtml'
   ]);
 
-  grunt.registerTask('dist-mac', [
+  grunt.registerTask('default', [
     'jshint',
-    'clean:distMac64',
-    'copy:webkit64',
-    'copy:appMacos64',
-    'rename:macApp64',
-    'chmod64'
+    // 'test'
+    'build'
   ]);
-
-  grunt.registerTask('dist-mac32', [
-    'jshint',
-    'clean:distMac32',
-    'copy:webkit32',
-    'copy:appMacos32',
-    'rename:macApp32',
-    'chmod32'
-  ]);
-
-  grunt.registerTask('check', [
-    'jshint'
-  ]);
-
-  grunt.registerTask('dmg', 'Create dmg from previously created app folder in dist.', function () {
-    var done = this.async();
-    var createDmgCommand = 'resources/mac/package.sh "nefelibata"';
-    require('child_process').exec(createDmgCommand, function (error, stdout, stderr) {
-      var result = true;
-      if (stdout) {
-        grunt.log.write(stdout);
-      }
-      if (stderr) {
-        grunt.log.write(stderr);
-      }
-      if (error !== null) {
-        grunt.log.error(error);
-        result = false;
-      }
-      done(result);
-    });
-  });
-
 };
