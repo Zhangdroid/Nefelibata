@@ -9,7 +9,7 @@ Linux and MacOS will coming soon.
 
 ##Screenshots
 
-!(Screenshots)[https://github.com/Zhangdroid/Nefelibata/blob/angular/Screenshot.gif]
+![Screenshots](https://github.com/Zhangdroid/Nefelibata/blob/angular/Screenshot.gif)
 
 
 ##TODO
