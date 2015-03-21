@@ -2,7 +2,7 @@
   font-family: 'Raleway';
   font-style: normal;
   font-weight: 100;
-  src: url("../assets/fonts/Raleway/Raleway-Thin.woff2") format("woff2");
+  src: url("../assets/fonts/Raleway/Raleway Thin.woff2") format("woff2");
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000; }
 @font-face {
   font-family: 'Raleway';
@@ -768,6 +768,14 @@ body {
 
 .hide {
   display: none; }
+
+#about a {
+  position: relative;
+  text-decoration: none;
+  display: inline-block;
+  color: #848484; }
+  #about a:hover {
+    color: #000; }
 
 #help {
   background: #000;

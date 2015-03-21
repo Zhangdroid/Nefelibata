@@ -1,6 +1,5 @@
-/*var marked = require('marked');
 var gui = require("nw.gui");
-var fs = require("fs");*/
+var fs = require("fs");
 
 var isSaved = 'true';
 

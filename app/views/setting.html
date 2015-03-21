@@ -7,6 +7,13 @@
         </md-toolbar>
         <md-button class="md-raised md-primary" ng-click="changeLanguage('en')">{{ 'BUTTON_LANG_EN' | translate }}</md-button>
         <md-button class="md-raised md-warn" ng-click="changeLanguage('zh')">{{ 'BUTTON_LANG_ZH' | translate }}</md-button>
+        <h2>
+        {{ 'ABOUT' | translate }}
+      </h2>
+        <p id="about">
+            {{ 'ABOUTCONTENT' | translate }} <i class="fa fa-smile-o"></i>:<a href="mailto:contrary.zhuo@gmail.com">contrary.zhuo@gmail.com</a>
+            <br> {{ 'PROJECTURL' | translate }}:<a href="https://github.com/Zhangdroid/Nefelibata" target="_blank">https://github.com/Zhangdroid/Nefelibata</a>
+        </p>
 
     </md-content>
     <div class="md-actions" layout="row">

@@ -1,19 +1,13 @@
-app.controller("editorController", function ($scope, Data) {
-    $scope.data = Data;
+app.controller("editorController", function ($scope) {
     $scope.editor = {
         context: '',
         parsed: '',
+        src:''
     };
     $scope.textChange = function () {
         isSaved = false;
         $scope.editor.parsed = marked($scope.editor.context);
     };
-    
-    $scope.onOpenFile = function () {
-
-        console.log(Data.src);
-    }
-
     $scope.onEditor = function (param) {
         var sel = $scope.getSelection();
         switch (param) {
