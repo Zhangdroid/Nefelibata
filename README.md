@@ -2,6 +2,8 @@ Nefelibata is a simple markdown editor using NW.js and AngularJS.
 
 ##Downloads
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/Zhangdroid/Nefelibata.svg)](https://greenkeeper.io/)
+
 * Windows : https://github.com/Zhangdroid/Nefelibata/releases
 
 Linux and MacOS will coming soon.
